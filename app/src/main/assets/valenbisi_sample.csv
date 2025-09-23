@@ -1,0 +1,16 @@
+id,name,address,available_bikes,free_spaces,total_spaces,latitude,longitude,status
+1,Plaza del Ayuntamiento,Plaza del Ayuntamiento - Valencia,15,5,20,39.4699,-0.3763,OPEN
+2,Estación Xàtiva,Carrer de Xàtiva 24 - Valencia,8,12,20,39.4661,-0.3769,OPEN
+3,Plaza de la Reina,Plaza de la Reina - Valencia,12,8,20,39.4753,-0.3745,OPEN
+4,Mercado Central,Plaza del Mercado - Valencia,6,14,20,39.4740,-0.3788,OPEN
+5,Ciudad de las Artes,Avenida del Profesor López Piñero - Valencia,18,2,20,39.4565,-0.3516,OPEN
+6,Jardín del Turia,Jardín del Turia - Valencia,10,10,20,39.4705,-0.3680,OPEN
+7,Estación del Norte,Carrer de Xàtiva - Estación del Norte,4,16,20,39.4661,-0.3777,OPEN
+8,Plaza de España,Plaza de España - Valencia,14,6,20,39.4704,-0.3794,OPEN
+9,Universitat de València,Avenida de Blasco Ibáñez - Valencia,9,11,20,39.4817,-0.3473,OPEN
+10,Playa de la Malvarrosa,Paseo Marítimo - Valencia,7,13,20,39.4816,-0.3246,OPEN
+11,Bioparc Valencia,Avenida Pío Baroja - Valencia,11,9,20,39.4848,-0.4100,OPEN
+12,L'Oceanogràfic,Carrer d'Eduardo Primo Yúfera - Valencia,16,4,20,39.4529,-0.3484,OPEN
+13,Palau de la Música,Passeig de l'Albereda - Valencia,5,15,20,39.4771,-0.3695,OPEN
+14,Torres de Serranos,Plaza de los Fueros - Valencia,13,7,20,39.4797,-0.3758,OPEN
+15,Mestalla Stadium,Avenida de Suecia - Valencia,3,17,20,39.4747,-0.3584,OPEN

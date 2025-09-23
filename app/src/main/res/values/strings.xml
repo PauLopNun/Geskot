@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">GesKot</string>
+
+    <!-- Main Screen -->
+    <string name="main_title">GesKot - Valenbisi</string>
+    <string name="search_hint">Buscar estaciones...</string>
+    <string name="sort_button">Ordenar</string>
+    <string name="filter_button">Filtrar</string>
+    <string name="refresh_button">Actualizar</string>
+
+    <!-- Station List -->
+    <string name="available_bikes">bicis</string>
+    <string name="free_spaces">espacios</string>
+    <string name="no_stations_found">No se encontraron estaciones</string>
+    <string name="try_different_search">Intenta con otros términos de búsqueda</string>
+
+    <!-- Detail Screen -->
+    <string name="back_button">Volver</string>
+    <string name="station_info">Información de la Estación</string>
+    <string name="availability">Disponibilidad</string>
+    <string name="available_bikes_detail">Bicis disponibles</string>
+    <string name="free_spaces_detail">Espacios libres</string>
+    <string name="statistics">Estadísticas</string>
+    <string name="additional_info">Información Adicional</string>
+    <string name="coordinates">Coordenadas</string>
+    <string name="station_id">ID de Estación</string>
+    <string name="last_updated">Última actualización</string>
+    <string name="operational">Operativa</string>
+    <string name="out_of_service">Fuera de servicio</string>
+    <string name="total_capacity">Capacidad total</string>
+    <string name="percent_available">% Disponible</string>
+    <string name="status">Estado</string>
+    <string name="station_occupation">Ocupación de la estación</string>
+    <string name="total_spaces">Total: %d espacios</string>
+    <string name="few_minutes_ago">Hace pocos minutos</string>
+
+    <!-- Loading and Error States -->
+    <string name="loading_stations">Cargando estaciones...</string>
+    <string name="error_loading_data">Error al cargar datos</string>
+    <string name="retry">Reintentar</string>
+
+    <!-- Sort and Filter Options -->
+    <string name="sort_by_name">Por nombre</string>
+    <string name="sort_by_availability">Por disponibilidad</string>
+    <string name="filter_5_plus">5+ bicis disponibles</string>
+    <string name="filter_10_plus">10+ bicis disponibles</string>
+    <string name="clear_filters">Limpiar filtros</string>
+
+    <!-- Availability Status -->
+    <string name="high_availability">Alta disponibilidad</string>
+    <string name="medium_availability">Media disponibilidad</string>
+    <string name="low_availability">Baja disponibilidad</string>
+
+    <!-- Content Descriptions (Accessibility) -->
+    <string name="search_icon">Buscar</string>
+    <string name="clear_search">Limpiar</string>
+    <string name="availability_indicator">Indicador de disponibilidad</string>
+    <string name="view_detail">Ver detalle</string>
+    <string name="location_icon">Ubicación</string>
+    <string name="bike_icon">Bicicleta</string>
+    <string name="parking_icon">Aparcamiento</string>
+    <string name="error_icon">Error</string>
+    <string name="check_icon">Verificado</string>
+    <string name="no_results_icon">Sin resultados</string>
+
+    <!-- Google Maps Key (placeholder - needs to be replaced with actual key) -->
+    <string name="google_maps_key">YOUR_GOOGLE_MAPS_API_KEY_HERE</string>
+</resources>
