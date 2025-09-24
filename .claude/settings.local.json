@@ -6,7 +6,8 @@
       "Bash(./gradlew:*)",
       "Bash(java:*)",
       "Bash(git add:*)",
-      "WebFetch(domain:valencia.opendatasoft.com)"
+      "WebFetch(domain:valencia.opendatasoft.com)",
+      "Bash(aapt dump badging:*)"
     ],
     "deny": [],
     "ask": []
