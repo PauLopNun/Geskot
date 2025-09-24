@@ -119,7 +119,7 @@ fun MainScreen(
             }
             is UiState.Error -> {
                 ErrorContent(
-                    message = stationsState.message,
+                    message = (stationsState as UiState.Error).message,
                     onRetry = { viewModel.retryLoadStations() }
                 )
             }

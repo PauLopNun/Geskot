@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:ns1="http://schemas.android.com/tools">
+    <color name="availability_high">#4CAF50</color>
+    <color name="availability_low">#F44336</color>
+    <color name="availability_medium">#FF9800</color>
+    <color name="background">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="dark_background">#121212</color>
+    <color name="dark_primary">#90CAF9</color>
+    <color name="dark_primary_variant">#42A5F5</color>
+    <color name="dark_surface">#1E1E1E</color>
+    <color name="error">#B00020</color>
+    <color name="on_background">#000000</color>
+    <color name="on_error">#FFFFFF</color>
+    <color name="on_primary">#FFFFFF</color>
+    <color name="on_secondary">#000000</color>
+    <color name="on_surface">#000000</color>
+    <color name="primary">#1976D2</color>
+    <color name="primary_variant">#0D47A1</color>
+    <color name="secondary">#03DAC6</color>
+    <color name="secondary_variant">#018786</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="transparent">#00000000</color>
+    <color name="white">#FFFFFF</color>
+    <string name="additional_info">Información Adicional</string>
+    <string name="app_name">GesKot</string>
+    <string name="availability">Disponibilidad</string>
+    <string name="availability_indicator">Indicador de disponibilidad</string>
+    <string name="available_bikes">bicis</string>
+    <string name="available_bikes_detail">Bicis disponibles</string>
+    <string name="back_button">Volver</string>
+    <string name="bike_icon">Bicicleta</string>
+    <string name="check_icon">Verificado</string>
+    <string name="clear_filters">Limpiar filtros</string>
+    <string name="clear_search">Limpiar</string>
+    <string name="coordinates">Coordenadas</string>
+    <string name="error_icon">Error</string>
+    <string name="error_loading_data">Error al cargar datos</string>
+    <string name="few_minutes_ago">Hace pocos minutos</string>
+    <string name="filter_10_plus">10+ bicis disponibles</string>
+    <string name="filter_5_plus">5+ bicis disponibles</string>
+    <string name="filter_button">Filtrar</string>
+    <string name="free_spaces">espacios</string>
+    <string name="free_spaces_detail">Espacios libres</string>
+    <string name="google_maps_key">AIzaSyDevelopment_Key_Replace_With_Your_Actual_Key</string>
+    <string name="high_availability">Alta disponibilidad</string>
+    <string name="last_updated">Última actualización</string>
+    <string name="loading_stations">Cargando estaciones...</string>
+    <string name="location_icon">Ubicación</string>
+    <string name="low_availability">Baja disponibilidad</string>
+    <string name="main_title">GesKot - Valenbisi</string>
+    <string name="medium_availability">Media disponibilidad</string>
+    <string name="no_results_icon">Sin resultados</string>
+    <string name="no_stations_found">No se encontraron estaciones</string>
+    <string name="operational">Operativa</string>
+    <string name="out_of_service">Fuera de servicio</string>
+    <string name="parking_icon">Aparcamiento</string>
+    <string name="percent_available">% Disponible</string>
+    <string name="refresh_button">Actualizar</string>
+    <string name="retry">Reintentar</string>
+    <string name="search_hint">Buscar estaciones...</string>
+    <string name="search_icon">Buscar</string>
+    <string name="sort_button">Ordenar</string>
+    <string name="sort_by_availability">Por disponibilidad</string>
+    <string name="sort_by_name">Por nombre</string>
+    <string name="station_id">ID de Estación</string>
+    <string name="station_info">Información de la Estación</string>
+    <string name="station_occupation">Ocupación de la estación</string>
+    <string name="statistics">Estadísticas</string>
+    <string name="status">Estado</string>
+    <string name="total_capacity">Capacidad total</string>
+    <string name="total_spaces">Total: %d espacios</string>
+    <string name="try_different_search">Intenta con otros términos de búsqueda</string>
+    <string name="view_detail">Ver detalle</string>
+    <style name="Theme.GesKot" parent="android:Theme.Material.Light.NoActionBar">
+        
+        <item name="android:colorPrimary">@color/primary</item>
+        <item name="android:colorPrimaryDark">@color/primary_variant</item>
+        <item name="android:colorAccent">@color/secondary</item>
+
+        
+        <item name="android:windowBackground">@color/background</item>
+
+        
+        <item name="android:statusBarColor" ns1:targetApi="l">@color/primary_variant</item>
+        <item name="android:windowLightStatusBar" ns1:targetApi="m">true</item>
+    </style>
+</resources>

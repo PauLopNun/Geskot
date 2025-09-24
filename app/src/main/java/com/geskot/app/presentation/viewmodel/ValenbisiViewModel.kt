@@ -106,12 +106,15 @@ class ValenbisiViewModel(application: Application) : AndroidViewModel(applicatio
      * Searches in station name and address
      */
     private fun filterStations(query: String) {
-        val currentStations = _stationsState.value.getDataOrNull() ?: return
+        val currentStations = when (val state = _stationsState.value) {
+            is UiState.Success -> state.data
+            else -> return
+        }
 
         val filtered = if (query.isBlank()) {
             currentStations
         } else {
-            currentStations.filter { station ->
+            currentStations.filter { station: ValenbisiStation ->
                 station.name.contains(query, ignoreCase = true) ||
                 station.address.contains(query, ignoreCase = true)
             }
@@ -155,7 +158,10 @@ class ValenbisiViewModel(application: Application) : AndroidViewModel(applicatio
      * @param minAvailability Minimum number of available bikes
      */
     fun filterByAvailability(minAvailability: Int) {
-        val currentStations = _stationsState.value.getDataOrNull() ?: return
+        val currentStations = when (val state = _stationsState.value) {
+            is UiState.Success -> state.data
+            else -> return
+        }
         val filtered = currentStations.filter { it.availableBikes >= minAvailability }
         Log.d(TAG, "Filtered ${filtered.size} stations with at least $minAvailability bikes")
         _filteredStations.value = filtered
@@ -167,7 +173,10 @@ class ValenbisiViewModel(application: Application) : AndroidViewModel(applicatio
     fun resetFilters() {
         Log.d(TAG, "Resetting all filters")
         _searchQuery.value = ""
-        val allStations = _stationsState.value.getDataOrNull() ?: emptyList()
+        val allStations = when (val state = _stationsState.value) {
+            is UiState.Success -> state.data
+            else -> emptyList()
+        }
         _filteredStations.value = allStations
     }
 
