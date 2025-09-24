@@ -10,7 +10,7 @@
 
 **GesKot** es una aplicación Android moderna desarrollada en Kotlin con Jetpack Compose que permite visualizar en tiempo real la disponibilidad de las estaciones del sistema Valenbisi en Valencia, España.
 
-[📱 Descargar APK](#compilar-apk) • [🚀 Instalación](#instalación-rápida) • [📖 Documentación](#arquitectura-del-proyecto)
+[📱 **DESCARGAR APK**](../../releases/latest) • [🚀 Instalación](#instalación-rápida) • [📖 Documentación](#arquitectura-del-proyecto)
 
 </div>
 
@@ -35,21 +35,28 @@
 - **🌐 Conectividad inteligente**: Online con fallback offline
 - **♿ Accesibilidad completa**: Soporte para lectores de pantalla
 
-## 🚀 Instalación Rápida
+## 📱 Descargar App
 
-### Opción 1: APK Directo (Más rápido)
+### 🎯 **Para Usuarios** (Solo descargar)
+[![Download APK](https://img.shields.io/badge/📱_Descargar_APK-v1.0-success?style=for-the-badge)](../../releases/latest)
+
+1. **Descarga** el APK desde GitHub Releases
+2. **Habilita** "Fuentes desconocidas" en Android
+3. **Instala** y ¡disfruta pedaleando por Valencia! 🚴‍♂️
+
+### 🚀 **Para Desarrolladores** (Compilar código)
+
+#### Opción 1: APK Directo
 ```bash
-# Compilar e instalar directamente
 ./gradlew installDebug
 ```
 
-### Opción 2: Manual
+#### Opción 2: Desde Código
 1. **Clonar proyecto:**
    ```bash
    git clone https://github.com/tu-usuario/GesKot.git
    cd GesKot
    ```
-
 2. **Abrir en Android Studio** y ejecutar ▶️
 
 **¡La app funciona inmediatamente!** Los mapas cargan con OpenStreetMap sin configuración.
