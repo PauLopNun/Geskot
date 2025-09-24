@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.geskot.app-mergeDebugResources-58:/values-in/values-in.xml",
+            "outputFile": "com.geskot.app-mergeDebugResources-59:/values-in/values-in.xml",
             "map": [
                 {
                     "source": "C:\\Users\\Pau\\.gradle\\caches\\8.9\\transforms\\83c22a60ba1281af0546d2c8a1807c3e\\transformed\\play-services-basement-18.1.0\\res\\values-in\\values.xml",

@@ -64,8 +64,7 @@
     <string name="check_icon">Verificado</string>
     <string name="no_results_icon">Sin resultados</string>
 
-    <!-- Google Maps Key (placeholder - needs to be replaced with actual key) -->
-    <!-- For testing purposes, you can use a development API key -->
-    <!-- Get your API key from: https://console.developers.google.com/ -->
-    <string name="google_maps_key">AIzaSyDevelopment_Key_Replace_With_Your_Actual_Key</string>
+    <!-- Google Maps Key - Replace with your actual API key -->
+    <!-- Get your API key from: https://console.cloud.google.com/ -->
+    <string name="google_maps_key">YOUR_GOOGLE_MAPS_API_KEY_HERE</string>
 </resources>

@@ -25,6 +25,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
 import com.geskot.app.data.model.AvailabilityStatus
 import com.geskot.app.data.model.ValenbisiStation
+import com.geskot.app.presentation.components.OpenStreetMapView
 
 /**
  * Detail screen showing station information and map location
@@ -116,24 +117,120 @@ fun DetailScreen(
 
 /**
  * Map section showing station location
+ * Uses OpenStreetMap as free alternative to Google Maps
  */
 @Composable
 private fun MapSection(
     station: ValenbisiStation,
     modifier: Modifier = Modifier
 ) {
-    val stationPosition = LatLng(station.latitude, station.longitude)
-    val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(stationPosition, 15f)
-    }
+    val context = LocalContext.current
+    var useOpenStreetMap by remember { mutableStateOf(true) }
 
     Card(
         modifier = modifier.padding(16.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
         shape = RoundedCornerShape(16.dp)
     ) {
+        Column {
+            // Map toggle buttons
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                OutlinedButton(
+                    onClick = { useOpenStreetMap = true },
+                    colors = if (useOpenStreetMap) {
+                        ButtonDefaults.outlinedButtonColors(
+                            containerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)
+                        )
+                    } else {
+                        ButtonDefaults.outlinedButtonColors()
+                    }
+                ) {
+                    Text("OpenStreetMap (Gratis)")
+                }
+
+                OutlinedButton(
+                    onClick = { useOpenStreetMap = false },
+                    colors = if (!useOpenStreetMap) {
+                        ButtonDefaults.outlinedButtonColors(
+                            containerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)
+                        )
+                    } else {
+                        ButtonDefaults.outlinedButtonColors()
+                    }
+                ) {
+                    Text("Google Maps")
+                }
+            }
+
+            // Map content
+            if (useOpenStreetMap) {
+                OpenStreetMapView(
+                    station = station,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(250.dp)
+                )
+            } else {
+                // Google Maps implementation (requires API key)
+                GoogleMapSection(station = station)
+            }
+        }
+    }
+}
+
+/**
+ * Google Maps implementation (requires API key)
+ */
+@Composable
+private fun GoogleMapSection(station: ValenbisiStation) {
+    val stationPosition = LatLng(station.latitude, station.longitude)
+    val cameraPositionState = rememberCameraPositionState {
+        position = CameraPosition.fromLatLngZoom(stationPosition, 15f)
+    }
+
+    // Check if Google Maps key is properly configured
+    val context = LocalContext.current
+    val mapsKey = context.getString(com.geskot.app.R.string.google_maps_key)
+
+    if (mapsKey == "YOUR_GOOGLE_MAPS_API_KEY_HERE") {
+        // Show message if API key not configured
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(250.dp)
+                .padding(16.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Icon(
+                imageVector = Icons.Default.Warning,
+                contentDescription = "Warning",
+                tint = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.size(48.dp)
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = "Google Maps API key no configurada",
+                style = MaterialTheme.typography.titleMedium,
+                textAlign = TextAlign.Center
+            )
+            Text(
+                text = "Consulta GOOGLE_MAPS_SETUP.md para configurarla",
+                style = MaterialTheme.typography.bodySmall,
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
+    } else {
         GoogleMap(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(250.dp),
             cameraPositionState = cameraPositionState,
             properties = MapProperties(
                 isMyLocationEnabled = false,

@@ -81,7 +81,10 @@ dependencies {
     // CSV parsing
     implementation 'com.opencsv:opencsv:5.8'
 
-    // Google Maps
+    // OpenStreetMap (free alternative to Google Maps)
+    implementation 'org.osmdroid:osmdroid-android:6.1.17'
+
+    // Google Maps (optional - requires API key)
     implementation 'com.google.android.gms:play-services-maps:18.2.0'
     implementation 'com.google.maps.android:maps-compose:4.3.0'
 

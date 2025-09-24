@@ -1,0 +1,19 @@
+<lint-module
+    format="1"
+    dir="C:\Users\Pau\Desktop\Programacion\Proyectos\Geskot\app"
+    name=":app"
+    type="APP"
+    maven="GesKot:app:unspecified"
+    agpVersion="8.5.0"
+    buildFolder="build"
+    bootClassPath="C:\Users\Pau\AppData\Local\Android\Sdk\platforms\android-34\android.jar;C:\Users\Pau\AppData\Local\Android\Sdk\build-tools\34.0.0\core-lambda-stubs.jar"
+    javaSourceLevel="1.8"
+    compileTarget="android-34"
+    neverShrinking="true">
+  <lintOptions
+      abortOnError="true"
+      absolutePaths="true"
+      checkReleaseBuilds="true"
+      explainIssues="true"/>
+  <variant name="release"/>
+</lint-module>

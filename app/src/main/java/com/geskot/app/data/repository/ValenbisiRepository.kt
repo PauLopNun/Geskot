@@ -148,18 +148,59 @@ class ValenbisiRepository(private val context: Context) {
 
     /**
      * Parse row with full format (8+ columns)
+     * Handles real Valencia API format: address,number,geo_point_2d,available,free,total
      */
     private fun parseFullFormatRow(row: Array<String>, index: Int): ValenbisiStation {
+        return try {
+            // Check if it's Valencia API format (geo_point_2d column)
+            if (row.size >= 6 && row.getOrElse(2) { "" }.contains(",")) {
+                parseValenciaApiFormat(row, index)
+            } else {
+                // Original format
+                ValenbisiStation(
+                    id = row.getOrElse(0) { index.toString() },
+                    name = row.getOrElse(1) { "Estación $index" },
+                    address = row.getOrElse(2) { "Dirección no disponible" },
+                    availableBikes = row.getOrElse(3) { "0" }.toIntOrNull() ?: (0..20).random(),
+                    freeSpaces = row.getOrElse(4) { "0" }.toIntOrNull() ?: (0..15).random(),
+                    totalSpaces = row.getOrElse(5) { "20" }.toIntOrNull() ?: 20,
+                    latitude = row.getOrElse(6) { "39.4699" }.toDoubleOrNull() ?: (39.450..39.490).random(),
+                    longitude = row.getOrElse(7) { "-0.3763" }.toDoubleOrNull() ?: (-0.400..-0.350).random(),
+                    status = row.getOrElse(8) { "OPEN" }
+                )
+            }
+        } catch (e: Exception) {
+            Log.w(TAG, "Error parsing row, using fallback", e)
+            createSampleStation(index)
+        }
+    }
+
+    /**
+     * Parse Valencia API format: address,number,geo_point_2d,available,free,total
+     */
+    private fun parseValenciaApiFormat(row: Array<String>, index: Int): ValenbisiStation {
+        val address = row.getOrElse(0) { "Estación $index" }
+        val number = row.getOrElse(1) { index.toString() }
+        val geoPoint = row.getOrElse(2) { "39.4699,-0.3763" }
+        val available = row.getOrElse(3) { "0" }.toIntOrNull() ?: 0
+        val free = row.getOrElse(4) { "0" }.toIntOrNull() ?: 0
+        val total = row.getOrElse(5) { "20" }.toIntOrNull() ?: (available + free)
+
+        // Parse geo_point_2d: "latitude, longitude"
+        val coordinates = geoPoint.split(",").map { it.trim() }
+        val latitude = coordinates.getOrElse(0) { "39.4699" }.toDoubleOrNull() ?: 39.4699
+        val longitude = coordinates.getOrElse(1) { "-0.3763" }.toDoubleOrNull() ?: -0.3763
+
         return ValenbisiStation(
-            id = row.getOrElse(0) { index.toString() },
-            name = row.getOrElse(1) { "Estación $index" },
-            address = row.getOrElse(2) { "Dirección no disponible" },
-            availableBikes = row.getOrElse(3) { "0" }.toIntOrNull() ?: (0..20).random(),
-            freeSpaces = row.getOrElse(4) { "0" }.toIntOrNull() ?: (0..15).random(),
-            totalSpaces = row.getOrElse(5) { "20" }.toIntOrNull() ?: 20,
-            latitude = row.getOrElse(6) { "39.4699" }.toDoubleOrNull() ?: (39.450..39.490).random(),
-            longitude = row.getOrElse(7) { "-0.3763" }.toDoubleOrNull() ?: (-0.400..-0.350).random(),
-            status = row.getOrElse(8) { "OPEN" }
+            id = number,
+            name = address.substringBefore(" - ").substringBefore(",").trim(),
+            address = address,
+            availableBikes = available,
+            freeSpaces = free,
+            totalSpaces = if (total > 0) total else (available + free),
+            latitude = latitude,
+            longitude = longitude,
+            status = if (total > 0) "OPEN" else "CLOSED"
         )
     }
 
