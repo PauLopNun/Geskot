@@ -7,6 +7,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -62,18 +65,22 @@ fun GesKotApp() {
         }
 
         composable("detail") {
-            val selectedStation = viewModel.selectedStation.value
+            val selectedStation by viewModel.selectedStation.collectAsState()
+
             selectedStation?.let { station ->
                 DetailScreen(
                     station = station,
                     onBackClick = {
+                        // Clear selected station first, then navigate
                         viewModel.clearSelectedStation()
-                        navController.popBackStack()
+                        navController.navigateUp()
                     }
                 )
             } ?: run {
-                // If no station is selected, navigate back to main
-                navController.popBackStack()
+                // If no station is selected, navigate back to main immediately
+                LaunchedEffect(Unit) {
+                    navController.navigateUp()
+                }
             }
         }
     }

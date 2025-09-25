@@ -30,12 +30,20 @@ class ValenbisiViewModel(application: Application) : AndroidViewModel(applicatio
     private val _selectedStation = MutableStateFlow<ValenbisiStation?>(null)
     private val _searchQuery = MutableStateFlow("")
     private val _filteredStations = MutableStateFlow<List<ValenbisiStation>>(emptyList())
+    private val _showOnlyAvailableBikes = MutableStateFlow(false)
+    private val _showOnlyAvailableSpots = MutableStateFlow(false)
+    private val _minBikesFilter = MutableStateFlow(0)
+    private val _minSpotsFilter = MutableStateFlow(0)
 
     // Public read-only state flows
     val stationsState: StateFlow<UiState<List<ValenbisiStation>>> = _stationsState.asStateFlow()
     val selectedStation: StateFlow<ValenbisiStation?> = _selectedStation.asStateFlow()
     val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
     val filteredStations: StateFlow<List<ValenbisiStation>> = _filteredStations.asStateFlow()
+    val showOnlyAvailableBikes: StateFlow<Boolean> = _showOnlyAvailableBikes.asStateFlow()
+    val showOnlyAvailableSpots: StateFlow<Boolean> = _showOnlyAvailableSpots.asStateFlow()
+    val minBikesFilter: StateFlow<Int> = _minBikesFilter.asStateFlow()
+    val minSpotsFilter: StateFlow<Int> = _minSpotsFilter.asStateFlow()
 
     init {
         loadStations()
@@ -98,26 +106,37 @@ class ValenbisiViewModel(application: Application) : AndroidViewModel(applicatio
     fun updateSearchQuery(query: String) {
         Log.d(TAG, "Updating search query: $query")
         _searchQuery.value = query
-        filterStations(query)
+        applyAllFilters()
     }
 
     /**
-     * Filter stations based on search query
-     * Searches in station name and address
+     * Apply all current filters to the stations
      */
-    private fun filterStations(query: String) {
+    private fun applyAllFilters() {
         val currentStations = when (val state = _stationsState.value) {
             is UiState.Success -> state.data
             else -> return
         }
 
-        val filtered = if (query.isBlank()) {
-            currentStations
-        } else {
-            currentStations.filter { station: ValenbisiStation ->
+        var filtered = currentStations
+
+        // Apply search query filter
+        val query = _searchQuery.value
+        if (query.isNotBlank()) {
+            filtered = filtered.filter { station: ValenbisiStation ->
                 station.name.contains(query, ignoreCase = true) ||
                 station.address.contains(query, ignoreCase = true)
             }
+        }
+
+        // Apply bikes availability filter
+        if (_showOnlyAvailableBikes.value) {
+            filtered = filtered.filter { it.availableBikes >= _minBikesFilter.value }
+        }
+
+        // Apply spots availability filter
+        if (_showOnlyAvailableSpots.value) {
+            filtered = filtered.filter { it.freeSpaces >= _minSpotsFilter.value }
         }
 
         Log.d(TAG, "Filtered ${filtered.size} stations from ${currentStations.size} total")
@@ -168,11 +187,39 @@ class ValenbisiViewModel(application: Application) : AndroidViewModel(applicatio
     }
 
     /**
+     * Toggle available bikes filter
+     * @param enabled Whether to enable the filter
+     * @param minBikes Minimum number of bikes required (default 1)
+     */
+    fun toggleAvailableBikesFilter(enabled: Boolean, minBikes: Int = 1) {
+        Log.d(TAG, "Toggle available bikes filter: $enabled (min: $minBikes)")
+        _showOnlyAvailableBikes.value = enabled
+        _minBikesFilter.value = if (enabled) minBikes else 0
+        applyAllFilters()
+    }
+
+    /**
+     * Toggle available spots filter
+     * @param enabled Whether to enable the filter
+     * @param minSpots Minimum number of spots required (default 1)
+     */
+    fun toggleAvailableSpotsFilter(enabled: Boolean, minSpots: Int = 1) {
+        Log.d(TAG, "Toggle available spots filter: $enabled (min: $minSpots)")
+        _showOnlyAvailableSpots.value = enabled
+        _minSpotsFilter.value = if (enabled) minSpots else 0
+        applyAllFilters()
+    }
+
+    /**
      * Reset all filters and show all stations
      */
     fun resetFilters() {
         Log.d(TAG, "Resetting all filters")
         _searchQuery.value = ""
+        _showOnlyAvailableBikes.value = false
+        _showOnlyAvailableSpots.value = false
+        _minBikesFilter.value = 0
+        _minSpotsFilter.value = 0
         val allStations = when (val state = _stationsState.value) {
             is UiState.Success -> state.data
             else -> emptyList()

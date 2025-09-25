@@ -46,6 +46,8 @@ fun MainScreen(
     val stationsState by viewModel.stationsState.collectAsStateWithLifecycle()
     val filteredStations by viewModel.filteredStations.collectAsStateWithLifecycle()
     val searchQuery by viewModel.searchQuery.collectAsStateWithLifecycle()
+    val showOnlyAvailableBikes by viewModel.showOnlyAvailableBikes.collectAsStateWithLifecycle()
+    val showOnlyAvailableSpots by viewModel.showOnlyAvailableSpots.collectAsStateWithLifecycle()
 
     var showSortMenu by remember { mutableStateOf(false) }
     var showFilterMenu by remember { mutableStateOf(false) }
@@ -143,6 +145,14 @@ fun MainScreen(
         FilterMenu(
             expanded = showFilterMenu,
             onDismiss = { showFilterMenu = false },
+            showOnlyAvailableBikes = showOnlyAvailableBikes,
+            showOnlyAvailableSpots = showOnlyAvailableSpots,
+            onToggleBikesFilter = { enabled ->
+                viewModel.toggleAvailableBikesFilter(enabled, if (enabled) 1 else 0)
+            },
+            onToggleSpotsFilter = { enabled ->
+                viewModel.toggleAvailableSpotsFilter(enabled, if (enabled) 1 else 0)
+            },
             onFilterByAvailability = { minBikes ->
                 viewModel.filterByAvailability(minBikes)
                 showFilterMenu = false
@@ -506,6 +516,10 @@ private fun SortMenu(
 private fun FilterMenu(
     expanded: Boolean,
     onDismiss: () -> Unit,
+    showOnlyAvailableBikes: Boolean,
+    showOnlyAvailableSpots: Boolean,
+    onToggleBikesFilter: (Boolean) -> Unit,
+    onToggleSpotsFilter: (Boolean) -> Unit,
     onFilterByAvailability: (Int) -> Unit,
     onResetFilters: () -> Unit
 ) {
@@ -513,6 +527,51 @@ private fun FilterMenu(
         expanded = expanded,
         onDismissRequest = onDismiss
     ) {
+        // Switch for available bikes filter
+        DropdownMenuItem(
+            text = {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text("Solo con bicis disponibles")
+                    Switch(
+                        checked = showOnlyAvailableBikes,
+                        onCheckedChange = onToggleBikesFilter
+                    )
+                }
+            },
+            onClick = { onToggleBikesFilter(!showOnlyAvailableBikes) },
+            leadingIcon = {
+                Icon(Icons.Default.DirectionsBike, contentDescription = null)
+            }
+        )
+
+        // Switch for available spots filter
+        DropdownMenuItem(
+            text = {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text("Solo con espacios libres")
+                    Switch(
+                        checked = showOnlyAvailableSpots,
+                        onCheckedChange = onToggleSpotsFilter
+                    )
+                }
+            },
+            onClick = { onToggleSpotsFilter(!showOnlyAvailableSpots) },
+            leadingIcon = {
+                Icon(Icons.Default.LocalParking, contentDescription = null)
+            }
+        )
+
+        Divider()
+
+        // Legacy filters for specific bike counts
         DropdownMenuItem(
             text = { Text("5+ bicis disponibles") },
             onClick = { onFilterByAvailability(5) }
@@ -521,7 +580,9 @@ private fun FilterMenu(
             text = { Text("10+ bicis disponibles") },
             onClick = { onFilterByAvailability(10) }
         )
+
         Divider()
+
         DropdownMenuItem(
             text = { Text("Limpiar filtros") },
             onClick = onResetFilters,

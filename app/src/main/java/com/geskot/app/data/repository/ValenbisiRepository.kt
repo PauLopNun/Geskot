@@ -157,10 +157,14 @@ class ValenbisiRepository(private val context: Context) {
                 parseValenciaApiFormat(row, index)
             } else {
                 // Original format
+                val id = row.getOrElse(0) { index.toString() }
+                val rawName = row.getOrElse(1) { "Estación $index" }
+                val address = row.getOrElse(2) { "Dirección no disponible" }
+
                 ValenbisiStation(
-                    id = row.getOrElse(0) { index.toString() },
-                    name = row.getOrElse(1) { "Estación $index" },
-                    address = row.getOrElse(2) { "Dirección no disponible" },
+                    id = id,
+                    name = extractStationName(rawName, id),
+                    address = address,
                     availableBikes = row.getOrElse(3) { "0" }.toIntOrNull() ?: (0..20).random(),
                     freeSpaces = row.getOrElse(4) { "0" }.toIntOrNull() ?: (0..15).random(),
                     totalSpaces = row.getOrElse(5) { "20" }.toIntOrNull() ?: 20,
@@ -191,9 +195,12 @@ class ValenbisiRepository(private val context: Context) {
         val latitude = coordinates.getOrElse(0) { "39.4699" }.toDoubleOrNull() ?: 39.4699
         val longitude = coordinates.getOrElse(1) { "-0.3763" }.toDoubleOrNull() ?: -0.3763
 
+        // Extract meaningful name from address
+        val stationName = extractStationName(address, number)
+
         return ValenbisiStation(
             id = number,
-            name = address.substringBefore(" - ").substringBefore(",").trim(),
+            name = stationName,
             address = address,
             availableBikes = available,
             freeSpaces = free,
@@ -210,10 +217,12 @@ class ValenbisiRepository(private val context: Context) {
     private fun parseMinimalFormatRow(row: Array<String>, index: Int): ValenbisiStation {
         val availableBikes = row.getOrElse(2) { "0" }.toIntOrNull() ?: (0..20).random()
         val freeSpaces = row.getOrElse(3) { "0" }.toIntOrNull() ?: (0..15).random()
+        val id = row.getOrElse(0) { index.toString() }
+        val rawName = row.getOrElse(1) { "Estación $index" }
 
         return ValenbisiStation(
-            id = row.getOrElse(0) { index.toString() },
-            name = row.getOrElse(1) { "Estación $index" },
+            id = id,
+            name = extractStationName(rawName, id),
             address = row.getOrElse(1) { "Dirección no disponible" },
             availableBikes = availableBikes,
             freeSpaces = freeSpaces,
@@ -225,28 +234,77 @@ class ValenbisiRepository(private val context: Context) {
     }
 
     /**
+     * Extract a meaningful station name from the address
+     */
+    private fun extractStationName(address: String, stationNumber: String): String {
+        // Clean the address and extract meaningful parts
+        val cleanAddress = address.trim()
+
+        // Try different extraction methods
+        return when {
+            // If it contains " - ", take the part before it
+            cleanAddress.contains(" - ") -> {
+                val parts = cleanAddress.split(" - ")
+                parts[0].trim()
+            }
+            // If it contains a comma, take the part before the first comma
+            cleanAddress.contains(",") -> {
+                val parts = cleanAddress.split(",")
+                parts[0].trim()
+            }
+            // If it starts with a number, remove it
+            cleanAddress.matches(Regex("^\\d+\\s+.*")) -> {
+                cleanAddress.replaceFirst(Regex("^\\d+\\s+"), "")
+            }
+            // If it's short enough, use as is
+            cleanAddress.length <= 30 -> cleanAddress
+            // Otherwise, take the first meaningful part
+            else -> {
+                val words = cleanAddress.split(" ")
+                words.take(4).joinToString(" ")
+            }
+        }.let { extracted ->
+            // Final cleanup
+            if (extracted.isBlank() || extracted.length < 3) {
+                "Estación $stationNumber"
+            } else {
+                extracted
+            }
+        }
+    }
+
+    /**
      * Create a sample station with realistic Valencia coordinates
      */
     private fun createSampleStation(index: Int): ValenbisiStation {
         val availableBikes = (0..20).random()
         val freeSpaces = (0..15).random()
 
-        // Sample addresses around Valencia
-        val sampleAddresses = listOf(
-            "Carrer de Xàtiva, Valencia",
-            "Plaza del Ayuntamiento, Valencia",
-            "Carrer de Colón, Valencia",
-            "Avenida del Reino de Valencia",
-            "Plaza de la Reina, Valencia",
-            "Carrer de la Paz, Valencia",
-            "Avenida de Francia, Valencia",
-            "Carrer del Pintor López, Valencia"
+        // Sample stations with descriptive names and addresses
+        val sampleStations = listOf(
+            Pair("Xàtiva", "Carrer de Xàtiva, 24 - Valencia"),
+            Pair("Ayuntamiento", "Plaza del Ayuntamiento, 1 - Valencia"),
+            Pair("Colón", "Carrer de Colón, 15 - Valencia"),
+            Pair("Reino de Valencia", "Avenida del Reino de Valencia, 28 - Valencia"),
+            Pair("Plaza de la Reina", "Plaza de la Reina, 3 - Valencia"),
+            Pair("Paz", "Carrer de la Paz, 11 - Valencia"),
+            Pair("Francia", "Avenida de Francia, 45 - Valencia"),
+            Pair("Pintor López", "Carrer del Pintor López, 7 - Valencia"),
+            Pair("Ciudad de las Ciencias", "Avenida del Profesor López Piñero, 7 - Valencia"),
+            Pair("Malvarrosa", "Paseo Marítimo Neptuno, 32 - Valencia"),
+            Pair("Mercado Central", "Plaza del Mercado, 6 - Valencia"),
+            Pair("Universidad", "Avenida de Blasco Ibáñez, 15 - Valencia"),
+            Pair("Ruzafa", "Carrer de Cadis, 22 - Valencia"),
+            Pair("Torres de Serrano", "Plaza de los Fueros, 4 - Valencia"),
+            Pair("Bioparc", "Avenida Pío Baroja, 3 - Valencia")
         )
+
+        val stationInfo = sampleStations[index % sampleStations.size]
 
         return ValenbisiStation(
             id = "station_$index",
-            name = "Estación ${index + 1}",
-            address = sampleAddresses[index % sampleAddresses.size],
+            name = stationInfo.first,
+            address = stationInfo.second,
             availableBikes = availableBikes,
             freeSpaces = freeSpaces,
             totalSpaces = availableBikes + freeSpaces,

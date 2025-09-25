@@ -2,7 +2,6 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-parcelize'
-    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
 }
 
 android {
@@ -22,10 +21,20 @@ android {
         }
     }
 
+    signingConfigs {
+        release {
+            storeFile file('../geskot.jks')
+            storePassword 'android123'
+            keyAlias 'geskot'
+            keyPassword 'android123'
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
     compileOptions {
@@ -84,15 +93,10 @@ dependencies {
     // OpenStreetMap (free alternative to Google Maps)
     implementation 'org.osmdroid:osmdroid-android:6.1.17'
 
-    // Google Maps (optional - requires API key)
-    implementation 'com.google.android.gms:play-services-maps:18.2.0'
-    implementation 'com.google.maps.android:maps-compose:4.3.0'
 
     // Material Icons Extended
     implementation 'androidx.compose.material:material-icons-extended:1.5.4'
 
-    // Location services
-    implementation 'com.google.android.gms:play-services-location:21.0.1'
 
     // Testing
     testImplementation 'junit:junit:4.13.2'

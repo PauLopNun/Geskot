@@ -12,6 +12,7 @@ import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
+import org.osmdroid.tileprovider.constants.OpenStreetMapTileProviderConstants
 
 /**
  * OpenStreetMap implementation for displaying Valenbisi stations
@@ -22,17 +23,28 @@ fun OpenStreetMapView(
     station: ValenbisiStation,
     modifier: Modifier = Modifier
 ) {
-    val context = LocalContext.current
 
     AndroidView(
         modifier = modifier.fillMaxSize(),
         factory = { ctx ->
-            // Initialize OSMDroid configuration
-            Configuration.getInstance().load(ctx, ctx.getSharedPreferences("osmdroid", Context.MODE_PRIVATE))
+            // Initialize OSMDroid configuration with better settings
+            Configuration.getInstance().apply {
+                load(ctx, ctx.getSharedPreferences("osmdroid", Context.MODE_PRIVATE))
+                userAgentValue = ctx.packageName
+                cacheMapTileCount = 12
+                cacheMapTileOvershoot = 2
+                tileDownloadThreads = 2
+                tileFileSystemThreads = 1
+                // Reduce tile download frequency
+                expirationExtendedDuration = 1000L * 60L * 60L * 24L * 7L // 7 days
+            }
 
             MapView(ctx).apply {
                 setTileSource(TileSourceFactory.MAPNIK)
                 setMultiTouchControls(true)
+
+                // Optimize hardware acceleration
+                setLayerType(android.view.View.LAYER_TYPE_HARDWARE, null)
 
                 // Set initial position and zoom level
                 val stationPoint = GeoPoint(station.latitude, station.longitude)
@@ -48,24 +60,46 @@ fun OpenStreetMapView(
                 }
                 overlays.add(marker)
 
-                // Enable zoom controls
+                // Enable zoom controls with reduced visibility time
                 zoomController.setVisibility(org.osmdroid.views.CustomZoomButtonsController.Visibility.SHOW_AND_FADEOUT)
+
+                // Optimize tile loading
+                isTilesScaledToDpi = true
+                isHorizontalMapRepetitionEnabled = false
+                isVerticalMapRepetitionEnabled = false
+
+                // Set reasonable zoom limits to reduce memory usage
+                minZoomLevel = 10.0
+                maxZoomLevel = 19.0
             }
         },
         update = { mapView ->
-            val stationPoint = GeoPoint(station.latitude, station.longitude)
-            mapView.controller.animateTo(stationPoint)
+            try {
+                val stationPoint = GeoPoint(station.latitude, station.longitude)
+                mapView.controller.animateTo(stationPoint)
 
-            // Update marker if station data changes
-            mapView.overlays.clear()
-            val marker = Marker(mapView).apply {
-                position = stationPoint
-                title = station.name
-                snippet = "${station.availableBikes} bicis disponibles"
-                setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
+                // Update marker if station data changes - only if needed
+                if (mapView.overlays.isEmpty() || mapView.overlays.size != 1) {
+                    mapView.overlays.clear()
+                    val marker = Marker(mapView).apply {
+                        position = stationPoint
+                        title = station.name
+                        snippet = "${station.availableBikes} bicis disponibles"
+                        setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
+                    }
+                    mapView.overlays.add(marker)
+                    mapView.invalidate()
+                } else {
+                    // Just update the existing marker
+                    (mapView.overlays[0] as? Marker)?.apply {
+                        position = stationPoint
+                        title = station.name
+                        snippet = "${station.availableBikes} bicis disponibles"
+                    }
+                }
+            } catch (e: Exception) {
+                // Ignore map update errors to prevent crashes
             }
-            mapView.overlays.add(marker)
-            mapView.invalidate()
         }
     )
 }

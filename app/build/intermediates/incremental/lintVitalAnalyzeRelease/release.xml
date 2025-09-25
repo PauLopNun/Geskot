@@ -7,7 +7,7 @@
     mergedManifest="build\intermediates\merged_manifest\release\processReleaseMainManifest\AndroidManifest.xml"
     proguardFiles="build\intermediates\default_proguard_files\global\proguard-android-optimize.txt-8.5.0;proguard-rules.pro"
     partialResultsDir="build\intermediates\lint_vital_partial_results\release\lintVitalAnalyzeRelease\out"
-    desugaredMethodsFiles="C:\Users\Pau\.gradle\caches\8.9\transforms\2ef5b3be44d9aa0b1d3f8a162ea7e43a\transformed\D8BackportedDesugaredMethods.txt">
+    desugaredMethodsFiles="C:\Users\Pau\.gradle\caches\8.9\transforms\1b5f37520f582a16213677c2b0e8a062\transformed\D8BackportedDesugaredMethods.txt">
   <buildFeatures
       namespacing="REQUIRED"/>
   <sourceProviders>
@@ -27,6 +27,6 @@
       applicationId="com.geskot.app"
       generatedSourceFolders="build\generated\ap_generated_sources\release\out"
       generatedResourceFolders="build\generated\res\resValues\release"
-      desugaredMethodsFiles="C:\Users\Pau\.gradle\caches\8.9\transforms\2ef5b3be44d9aa0b1d3f8a162ea7e43a\transformed\D8BackportedDesugaredMethods.txt">
+      desugaredMethodsFiles="C:\Users\Pau\.gradle\caches\8.9\transforms\1b5f37520f582a16213677c2b0e8a062\transformed\D8BackportedDesugaredMethods.txt">
   </artifact>
 </variant>

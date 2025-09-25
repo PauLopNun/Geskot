@@ -27,6 +27,6 @@
       applicationId="com.geskot.app"
       generatedSourceFolders="build\generated\ap_generated_sources\release\out"
       generatedResourceFolders="build\generated\res\resValues\release"
-      desugaredMethodsFiles="C:\Users\Pau\.gradle\caches\8.9\transforms\2ef5b3be44d9aa0b1d3f8a162ea7e43a\transformed\D8BackportedDesugaredMethods.txt">
+      desugaredMethodsFiles="C:\Users\Pau\.gradle\caches\8.9\transforms\1b5f37520f582a16213677c2b0e8a062\transformed\D8BackportedDesugaredMethods.txt">
   </artifact>
 </variant>

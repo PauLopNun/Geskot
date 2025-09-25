@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.geskot.app-mergeReleaseResources-55:/values-v21/values-v21.xml",
+            "outputFile": "com.geskot.app-mergeReleaseResources-50:/values-v21/values-v21.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\Pau\\.gradle\\caches\\8.9\\transforms\\ea0c6705441568154632fd80f80191b5\\transformed\\core-1.12.0\\res\\values-v21\\values-v21.xml",
+                    "source": "C:\\Users\\Pau\\.gradle\\caches\\8.9\\transforms\\0137275de92fb8c1a8948e44ce1fce14\\transformed\\core-1.12.0\\res\\values-v21\\values-v21.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,13",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4",

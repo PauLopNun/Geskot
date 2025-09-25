@@ -20,14 +20,15 @@
 
 ### 🎯 Funcionalidades Principales
 - **📊 Datos en tiempo real**: API oficial de Valencia actualizada cada 10 minutos
-- **🗺️ Mapas integrados**: OpenStreetMap gratuito + Google Maps opcional
+- **🗺️ Mapas integrados**: OpenStreetMap gratuito, optimizado y sin configuración
 - **🎨 Colores dinámicos**: Indicadores visuales intuitivos:
   - 🟢 **Verde**: Alta disponibilidad (60%+ bicicletas)
   - 🟡 **Naranja**: Disponibilidad media (30-60% bicicletas)
   - 🔴 **Rojo**: Baja disponibilidad (<30% bicicletas)
-- **🔍 Búsqueda inteligente**: Por nombre o dirección de estaciones
-- **📍 Información detallada**: Disponibilidad, ubicación, estadísticas
+- **🔍 Búsqueda y filtros avanzados**: Por nombre, dirección, bicis disponibles o espacios libres
+- **📍 Información detallada**: Disponibilidad, ubicación, estadísticas y mapas
 - **☁️ Sin configuración**: Funciona inmediatamente sin API keys
+- **🏷️ Nombres descriptivos**: Estaciones identificadas por ubicaciones reales (Xàtiva, Ayuntamiento, etc.)
 
 ### 🔄 Características Técnicas
 - **⚡ Interfaz moderna**: Material Design 3 con animaciones fluidas
@@ -38,7 +39,9 @@
 ## 📱 Descargar App
 
 ### 🎯 **Para Usuarios** (Solo descargar)
-[![Download APK](https://img.shields.io/badge/📱_Descargar_APK-v1.0-success?style=for-the-badge)](../../releases/latest)
+[![Download APK](https://img.shields.io/badge/📱_Descargar_APK-v1.0.0-success?style=for-the-badge)](../../releases/latest)
+
+**📦 APK Listo**: `GesKot-v1.0-release.apk` (11.3 MB) - ¡Funcional y optimizado!
 
 1. **Descarga** el APK desde GitHub Releases
 2. **Habilita** "Fuentes desconocidas" en Android
@@ -61,34 +64,25 @@
 
 **¡La app funciona inmediatamente!** Los mapas cargan con OpenStreetMap sin configuración.
 
-## 🗺️ Mapas: Doble Opción
+## 🗺️ Mapas: OpenStreetMap
 
-### 🆓 OpenStreetMap (Por defecto)
+### 🆓 OpenStreetMap (Único y Optimizado)
 - ✅ **Gratuito y sin configuración**
 - ✅ **Funciona inmediatamente**
 - ✅ **Datos completos de Valencia**
+- ✅ **Tamaño optimizado y sin botones innecesarios**
+- ✅ **Rendimiento mejorado con menos advertencias HWUI**
 
-### 🌍 Google Maps (Opcional)
-Si quieres usar Google Maps también:
-
-1. Ve a [Google Cloud Console](https://console.cloud.google.com/)
-2. Habilita "Maps SDK for Android"
-3. Crea una API Key
-4. En `app/src/main/res/values/strings.xml`:
-   ```xml
-   <string name="google_maps_key">TU_API_KEY_AQUI</string>
-   ```
-
-La app permite alternar entre ambos mapas con botones.
+> **Nota:** Se removió Google Maps para simplificar la experiencia y eliminar dependencias innecesarias. OpenStreetMap ofrece toda la funcionalidad necesaria para ubicar las estaciones.
 
 ## 📱 Pantallas
 
 | Pantalla | Descripción |
 |----------|-------------|
-| **🏠 Lista Principal** | Estaciones con colores según disponibilidad |
-| **🔍 Búsqueda** | Filtros por nombre, dirección o disponibilidad |
-| **📋 Detalle** | Info completa: bicis, espacios, estadísticas |
-| **🗺️ Mapa** | Ubicación exacta con OpenStreetMap/Google Maps |
+| **🏠 Lista Principal** | Estaciones con nombres descriptivos y colores según disponibilidad |
+| **🔍 Búsqueda y Filtros** | Búsqueda por nombre/dirección + switches para bicis/espacios disponibles |
+| **📋 Detalle** | Info completa: bicis, espacios, estadísticas y progreso visual |
+| **🗺️ Mapa** | Ubicación exacta con OpenStreetMap optimizado |
 
 ## 🛠️ Stack Tecnológico
 
@@ -104,8 +98,7 @@ La app permite alternar entre ambos mapas con botones.
 - **Valencia OpenData API** - Fuente de datos oficial
 
 ### Mapas
-- **OpenStreetMap** 6.1.17 - Mapas gratuitos (principal)
-- **Google Maps** 18.2.0 - Mapas premium (opcional)
+- **OpenStreetMap** 6.1.17 - Mapas gratuitos optimizados
 
 ## 📦 Compilar APK
 
@@ -120,6 +113,35 @@ La app permite alternar entre ambos mapas con botones.
 ./gradlew assembleRelease
 # APK en: app/build/outputs/apk/release/
 ```
+
+### 🔐 Configuración Keystore (Para Releases)
+
+La aplicación viene configurada con un keystore para firmar releases. Las credenciales son:
+
+- **Archivo**: `geskot.jks` (en la raíz del proyecto)
+- **Store Password**: `android123`
+- **Key Alias**: `geskot`
+- **Key Password**: `android123`
+
+**Para producción**, debes generar tu propio keystore:
+
+```bash
+keytool -genkey -v -keystore mi-app.jks -keyalg RSA -keysize 2048 -validity 10000 -alias mi-app-key
+```
+
+Luego actualiza en `app/build.gradle`:
+```gradle
+signingConfigs {
+    release {
+        storeFile file('../mi-app.jks')
+        storePassword 'TU_PASSWORD'
+        keyAlias 'mi-app-key'
+        keyPassword 'TU_PASSWORD'
+    }
+}
+```
+
+> ⚠️ **Importante**: Nunca subas keystores de producción a repositorios públicos. Usa variables de entorno o archivos locales.
 
 ## 🏗️ Arquitectura
 
