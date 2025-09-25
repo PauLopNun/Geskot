@@ -535,7 +535,7 @@ private fun FilterMenu(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text("Solo con bicis disponibles")
+                    Text("Con bicis")
                     Switch(
                         checked = showOnlyAvailableBikes,
                         onCheckedChange = onToggleBikesFilter
@@ -556,7 +556,7 @@ private fun FilterMenu(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text("Solo con espacios libres")
+                    Text("Con espacios")
                     Switch(
                         checked = showOnlyAvailableSpots,
                         onCheckedChange = onToggleSpotsFilter

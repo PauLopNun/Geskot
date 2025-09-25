@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)
+![Version](https://img.shields.io/badge/version-1.0.1-blue.svg)
 ![Kotlin](https://img.shields.io/badge/Kotlin-1.9.10-purple.svg)
 ![Compose](https://img.shields.io/badge/Jetpack%20Compose-1.5.4-green.svg)
 ![API](https://img.shields.io/badge/API-24+-brightgreen.svg)
@@ -39,9 +39,9 @@
 ## 📱 Descargar App
 
 ### 🎯 **Para Usuarios** (Solo descargar)
-[![Download APK](https://img.shields.io/badge/📱_Descargar_APK-v1.0.0-success?style=for-the-badge)](../../releases/latest)
+[![Download APK](https://img.shields.io/badge/📱_Descargar_APK-v1.0.1-success?style=for-the-badge)](../../releases/latest)
 
-**📦 APK Listo**: `GesKot-v1.0-release.apk` (11.3 MB) - ¡Funcional y optimizado!
+**📦 APK Listo**: `GesKot-v1.0.1-release.apk` (11.3 MB) - ¡UI mejorada y más seguro!
 
 1. **Descarga** el APK desde GitHub Releases
 2. **Habilita** "Fuentes desconocidas" en Android
@@ -116,20 +116,13 @@
 
 ### 🔐 Configuración Keystore (Para Releases)
 
-La aplicación viene configurada con un keystore para firmar releases. Las credenciales son:
-
-- **Archivo**: `geskot.jks` (en la raíz del proyecto)
-- **Store Password**: `android123`
-- **Key Alias**: `geskot`
-- **Key Password**: `android123`
-
-**Para producción**, debes generar tu propio keystore:
+Para releases de producción, necesitas crear tu propio keystore:
 
 ```bash
 keytool -genkey -v -keystore mi-app.jks -keyalg RSA -keysize 2048 -validity 10000 -alias mi-app-key
 ```
 
-Luego actualiza en `app/build.gradle`:
+Luego descomenta y actualiza en `app/build.gradle`:
 ```gradle
 signingConfigs {
     release {
@@ -139,9 +132,15 @@ signingConfigs {
         keyPassword 'TU_PASSWORD'
     }
 }
+buildTypes {
+    release {
+        signingConfig signingConfigs.release
+        // ...
+    }
+}
 ```
 
-> ⚠️ **Importante**: Nunca subas keystores de producción a repositorios públicos. Usa variables de entorno o archivos locales.
+> ⚠️ **Importante**: Los keystores están excluidos del repositorio por seguridad. Crea el tuyo propio para releases.
 
 ## 🏗️ Arquitectura
 
